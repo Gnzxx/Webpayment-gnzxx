@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway - Metode Pembayaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 25px;
+        }
+        
+        .method {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 5px solid #3498db;
+        }
+        
+        .method:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .method.dana {
+            border-top-color: #00b7ff;
+        }
+        
+        .method.gopay {
+            border-top-color: #00a650;
+        }
+        
+        .method.qris {
+            border-top-color: #9c27b0;
+            min-width: 100%;
+        }
+        
+        .method-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            padding: 15px;
+            border-radius: 12px;
+            background-color: #f5f7fa;
+        }
+        
+        .method.dana .method-icon {
+            color: #00b7ff;
+        }
+        
+        .method.gopay .method-icon {
+            color: #00a650;
+        }
+        
+        .method.qris .method-icon {
+            color: #9c27b0;
+        }
+        
+        .method h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .method p {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .payment-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid #3498db;
+        }
+        
+        .payment-info .icon {
+            font-size: 1.8rem;
+            margin-right: 15px;
+            color: #2c3e50;
+        }
+        
+        .payment-info .text {
+            flex: 1;
+        }
+        
+        .payment-info .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: 1px;
+        }
+        
+        .payment-info .label {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .qris-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .qris-code {
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .qris-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .qris-desc {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            max-width: 400px;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .copy-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        @media (max-width: 768px) {
+            .payment-methods {
+                padding: 20px;
+            }
+            
+            .method {
+                min-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .payment-info .number {
+                font-size: 1.3rem;
+            }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-credit-card"></i> Payment Gateway</h1>
+            <p>Pilih metode pembayaran yang tersedia di bawah ini</p>
+        </div>
+        
+        <div class="payment-methods">
+            <!-- Dana Payment Method -->
+            <div class="method dana">
+                <div class="method-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h3>DANA</h3>
+                <p>Transfer ke nomor DANA berikut untuk melakukan pembayaran</p>
+                
+                <div class="payment-info">
+                    <div class="icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="text">
+                        <div class="number">085168712907</div>
+                        <div class="label">Nomor DANA</div>
+                    </div>
+                    <button class="copy-btn" data-number="085168712907">
+                        <i class="fas fa-copy"></i> Salin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Gopay Payment Method -->
+            <div class="method gopay">
+                <div class="method-icon">
+                    <i class="fab fa-google-wallet"></i>
+                </div>
+                <h3>GoPay</h3>
+                <p>Transfer ke nomor GoPay berikut untuk melakukan pembayaran</p>
+                
+                <div class="payment-info">
+                    <div class="icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="text">
+                        <div class="number">085168712907</div>
+                        <div class="label">Nomor GoPay</div>
+                    </div>
+                    <button class="copy-btn" data-number="085168712907">
+                        <i class="fas fa-copy"></i> Salin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- QRIS Payment Method -->
+            <div class="method qris">
+                <div class="method-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h3>QRIS All Payment</h3>
+                <p>Scan QR Code berikut untuk pembayaran menggunakan berbagai metode (ShopeePay, OVO, LinkAja, Dana, GoPay, dll)</p>
+                
+                <div class="qris-container">
+                    <div class="qris-code">
+                        <img src="https://i.ibb.co.com/GfCPV8wY/IMG-20251209-WA0392.jpg" alt="QRIS Code">
+                    </div>
+                    <p class="qris-desc">Scan QR Code di atas menggunakan aplikasi e-wallet atau mobile banking yang mendukung QRIS</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Payment Gateway. Pastikan nomor dan QRIS yang digunakan sesuai.</p>
+            <p>Jika mengalami masalah, silakan hubungi <a href="#">customer service</a>.</p>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        Nomor berhasil disalin ke clipboard!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add copy functionality to buttons
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            const notification = document.getElementById('notification');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const number = this.getAttribute('data-number');
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(number).then(() => {
+                        // Show notification
+                        notification.style.display = 'block';
+                        notification.textContent = 'Nomor ' + number + ' berhasil disalin ke clipboard!';
+                        
+                        // Hide notification after 3 seconds
+                        setTimeout(() => {
+                            notification.style.display = 'none';
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('Gagal menyalin teks: ', err);
+                        notification.style.backgroundColor = '#e74c3c';
+                        notification.textContent = 'Gagal menyalin nomor!';
+                        notification.style.display = 'block';
+                        
+                        setTimeout(() => {
+                            notification.style.display = 'none';
+                            notification.style.backgroundColor = '#2ecc71';
+                        }, 3000);
+                    });
+                });
+            });
+            
+            // Add some interactive effects
+            const methods = document.querySelectorAll('.method');
+            methods.forEach(method => {
+                method.addEventListener('mouseenter', function() {
+                    this.style.transition = 'all 0.3s ease';
+                });
+            });
+            
+            // QR Code image error handling
+            const qrImage = document.querySelector('.qris-code img');
+            qrImage.addEventListener('error', function() {
+                this.src = 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://example.com/payment';
+                this.alt = 'QR Code placeholder - gambar asli tidak dapat dimuat';
+            });
+        });
+    </script>
+</body>
+</html>
